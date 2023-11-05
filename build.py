@@ -2,7 +2,7 @@ import glob
 import os
 import zipfile
 
-src_dir_name = 'Spectres-addon'
+src_dir_name = 'spectres-addon'
 init_file_path = os.path.join(src_dir_name, '__init__.py')
 init_file = open(init_file_path)
 
