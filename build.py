@@ -24,6 +24,9 @@ for py_file in glob.glob(os.path.join(src_dir_name, '*.py')):
 for json_file in glob.glob(os.path.join(src_dir_name, '*.json')):
     zipf.write(json_file)
 
+for json_file in glob.glob(os.path.join(src_dir_name, '*.blend')):
+    zipf.write(json_file)
+
 zipf.close()
 
 

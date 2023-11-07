@@ -2,6 +2,8 @@ import bpy
 import os
 import sys
 
+# from bpy.props import IntProperty, EnumProperty, BoolProperty, StringProperty
+
 from dataclasses import dataclass
 from .commons import CollectionUtils as ColUtils
 from .lib_loader import LibTypes
@@ -28,14 +30,41 @@ class SL_PT_panel(bpy.types.Panel):
         if scene.sl_props.is_loaded :   
             loader = row.operator(SL_OT_unload.bl_idname, text = "Unload")
 
+            row = layout.row()
+            
+            split = row.split(factor = 0.5,align =  True)
+            split.label(text="Show Exemples")
+            split.prop(scene.sl_props, 'chapter', text = "")
+
         else : row.operator(SL_OT_load.bl_idname, text = "Load")
 
 class SL_PT_props(bpy.types.PropertyGroup):
+
+    def on_chapter(self, context):
+        print
+
     is_loaded : bpy.props.BoolProperty(
         name = "isloaded",
         description = "Load State",
         default = False
     )
+    
+    chapter : bpy.props.EnumProperty(
+        name= "Chapter",
+        description= "Show Exemples",
+        items= [
+                ('0', "None", "", "", 1),
+                ('1', "Texture Based", "", "", 0),
+                ('2', "SDF 2D", "",  "", 3),
+                ('3', "SDF 3D", "", "", 4),
+                ('4', "Volumetrics", "", "", 5),
+        ],
+        default = 1,
+        options ={'SKIP_SAVE'},
+        update=on_chapter
+    )
+
+    
 
 class SL_OT_loader(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
@@ -84,6 +113,7 @@ class SL_OT_unload(SL_OT_loader):
     bl_label = "Unload Shader Lib"
     def execute(self, context) : return super().execute(context, False)
     def invoke(self, context, event): return context.window_manager.invoke_confirm(self, event)
+
 
 
 # ---------------------------------------------------- Module registration

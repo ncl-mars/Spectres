@@ -13,7 +13,7 @@ Download the "Spectres.zip" file :
 - navigate to _dist/Spectres.zip_
 - click on the download raw file button
 
-Store the zip file somewhere in your file system (ex: _/Documents/Dev/Blender/Addons_), DO NOT UNZIP IT.
+Store the zip file somewhere in your file system (ex: _/Documents/Applications/Blender/Addons), DO NOT UNZIP IT.
 
 
 In Blender, open the preferences menu

@@ -78,7 +78,6 @@ def add_worlds_to_data(data_from, data_to):
                 data_to.worlds.append(world)
     return data_to
 
-
 def load_lib_type(lib_type, id = None):
 
     module.root_col = ColUtils.check_create_collection(
