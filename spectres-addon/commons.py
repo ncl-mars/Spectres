@@ -10,9 +10,6 @@ from pathlib import Path
 from dataclasses import dataclass
 
 
-
-
-
 class PathsUtils:
 
     @classmethod

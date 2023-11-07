@@ -20,7 +20,7 @@ class LibTypes(int, Enum):
         obj.color = color
         return obj
 
-    SHADERS     = (0, 'SP.ShaderLib',  'SL', 2, True,  'COLOR_04')
+    SHADERS     = (0, 'SP.ShaderLib',  'SL', 4, True,  'COLOR_04')
     NODES       = (1, 'SP.NodeLib',    'NL', 2, True,  'COLOR_05')
     LIGHT_RIGGS = (2, 'SP.LightRiggs', 'LR', 2, False, 'COLOR_03')
     CAM_RIGGS   = (3, 'SP.CamRiggs',   'CR', 2, False, 'COLOR_02')
@@ -43,11 +43,17 @@ def clear_sp_col(sp_col):
     if sp_col :
         for child in sp_col.children:
             for obj in child.objects:
-                # print("deleting sp objects : ", obj, " of type : ", obj.type)
+                print("deleting sp objects : ", obj, " of type : ", obj.type)
+
                 if obj.type   == 'ARMATURE' : bpy.data.armatures.remove(obj.data)
                 elif obj.type == 'LIGHT'    : bpy.data.lights.remove(obj.data)
                 elif obj.type == 'CAMERA'   : bpy.data.cameras.remove(obj.data)
                 elif obj.type == 'MATERIAL' : bpy.data.materials.remove(obj.data)
+                elif obj.type == 'CURVE'    : bpy.data.curves.remove(obj.data)
+                elif obj.type == 'FONT'     :
+                    if obj.data.font : bpy.data.fonts.remove(obj.data.font)
+                    bpy.data.curves.remove(obj.data, do_unlink = True)
+
                 elif obj.type == 'MESH'     : 
                     for slot in obj.material_slots :
                         bpy.data.materials.remove(slot.material)

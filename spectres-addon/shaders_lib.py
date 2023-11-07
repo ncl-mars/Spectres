@@ -59,7 +59,10 @@ class SL_OT_loader(bpy.types.Operator):
         if load_lib:
             lib_data = loader.load_lib_type(LibTypes.SHADERS, 1)
             shaders_col = self.create_shader_col()
-            [shaders_col.children.link(sp_col) for sp_col in lib_data.collections]
+            for sp_col in lib_data.collections :
+                shaders_col.children.link(sp_col)
+                sp_col.hide_render = True
+                sp_col.hide_viewport = True
 
         else:
             loader.clear_sp_col(bpy.data.collections.get(LibTypes.SHADERS.idname))
