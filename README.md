@@ -1,19 +1,19 @@
 # Spectres
-a blender add-on to implement few tools and a library (shaders + geometry nodes)
+a Blender add-on to implement few tools and a library (shaders + geometry nodes)
 
 ### Intentions
 - To provide a tool to facilitate the use of materials and nodes. 
 - To develop a library among a group of students to respond to their needs, and provide them an easy access to this content
  
 ### Installation
-Make sure you got the last LTS blender version (3.6.2)
+Make sure you got the last LTS Blender version (3.6.2)
 
 Download the "Spectres.zip" file :
 
 - navigate to _dist/Spectres.zip_
 - click on the download raw file button
 
-and store it somewhere in your file system (ex: _/Documents/Dev/Blender/Addons_).
+Store the zip file somewhere in your file system (ex: _/Documents/Dev/Blender/Addons_), DO NOT UNZIP IT.
 
 
 In Blender, open the preferences menu
@@ -41,7 +41,7 @@ Locate the old addon (_Spectres_) in the add-on list.
 - step 2 : remove it.
 - step 3 : press the refresh button.
 
-Follow Installation instructions 
+Follow Installation instructions again
 
 
 ### Content
