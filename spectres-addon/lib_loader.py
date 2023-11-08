@@ -20,7 +20,7 @@ class LibTypes(int, Enum):
         obj.color = color
         return obj
 
-    SHADERS     = (0, 'SP.ShaderLib',  'SL', 4, True,  'COLOR_04')
+    SHADERS     = (0, 'SP.ShaderLib',  'SL', 5, True,  'COLOR_04')
     NODES       = (1, 'SP.NodeLib',    'NL', 2, True,  'COLOR_05')
     LIGHT_RIGGS = (2, 'SP.LightRiggs', 'LR', 2, False, 'COLOR_03')
     CAM_RIGGS   = (3, 'SP.CamRiggs',   'CR', 2, False, 'COLOR_02')
@@ -59,6 +59,13 @@ def clear_sp_col(sp_col):
                         bpy.data.materials.remove(slot.material)
                     bpy.data.meshes.remove(obj.data)
 
+                    for txt in bpy.data.texts :
+                        if txt.users == 0 and txt.name.split('.')[0] == 'SP': 
+                            bpy.data.texts.remove(txt)
+                    for grease in bpy.data.grease_pencils :
+                        if grease.users == 0 and grease.name.split('.')[0] == 'SP': 
+                            bpy.data.grease_pencils.remove(grease)
+
                 elif obj.type == 'OBJECT'   : bpy.data.objects.remove(obj)
 
             bpy.data.collections.remove(child, do_unlink = True)
@@ -85,6 +92,8 @@ def load_lib_type(lib_type, id = None):
         name = ROOT_NAME, 
         color = 'COLOR_01', 
         override = False)
+    root_col.hide_render = True
+    
 
     with bpy.data.libraries.load(str(file_path)) as (data_from, data_to):
         

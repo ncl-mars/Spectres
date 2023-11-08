@@ -2,8 +2,6 @@ import bpy
 import os
 import sys
 
-# from bpy.props import IntProperty, EnumProperty, BoolProperty, StringProperty
-
 from dataclasses import dataclass
 from .commons import CollectionUtils as ColUtils
 from .lib_loader import LibTypes
@@ -29,28 +27,25 @@ class SL_PT_panel(bpy.types.Panel):
         
         if scene.sl_props.is_loaded :   
             loader = row.operator(SL_OT_unload.bl_idname, text = "Unload")
-
             row = layout.row()
-            
             split = row.split(factor = 0.5,align =  True)
             split.label(text="Show Exemples")
-            split.prop(scene.sl_props, 'chapter', text = "")
+            split.prop(scene.sl_props, 'exemples', text = "")
 
         else : row.operator(SL_OT_load.bl_idname, text = "Load")
 
 class SL_PT_props(bpy.types.PropertyGroup):
 
-    def on_chapter(self, context):
-        print
+    def on_exemples(self, context):
+        print(self.exemples)
 
     is_loaded : bpy.props.BoolProperty(
         name = "isloaded",
         description = "Load State",
-        default = False
-    )
+        default = False)
     
-    chapter : bpy.props.EnumProperty(
-        name= "Chapter",
+    exemples : bpy.props.EnumProperty(
+        name= "Exemples",
         description= "Show Exemples",
         items= [
                 ('0', "None", "", "", 1),
@@ -61,8 +56,7 @@ class SL_PT_props(bpy.types.PropertyGroup):
         ],
         default = 1,
         options ={'SKIP_SAVE'},
-        update=on_chapter
-    )
+        update=on_exemples)
 
     
 
@@ -78,11 +72,14 @@ class SL_OT_loader(bpy.types.Operator):
                     bpy.data.worlds.remove(world)
 
     def create_shader_col(self):
-        return ColUtils.check_create_collection(
+        col = ColUtils.check_create_collection(
         parent = loader.root_col, 
         name = LibTypes.SHADERS.idname, 
         color = LibTypes.SHADERS.color, 
         override = False)
+        col.hide_render = True
+        # col.hide_viewport = True
+        return col
 
     def execute(self, context, load_lib):
         if load_lib:
@@ -90,13 +87,12 @@ class SL_OT_loader(bpy.types.Operator):
             shaders_col = self.create_shader_col()
             for sp_col in lib_data.collections :
                 shaders_col.children.link(sp_col)
-                sp_col.hide_render = True
                 sp_col.hide_viewport = True
+            # [shaders_col.children.link(sp_col) for sp_col in lib_data.collections]
 
         else:
             loader.clear_sp_col(bpy.data.collections.get(LibTypes.SHADERS.idname))
             self.clear_sp_worlds()
-            print("unloading shaders lib")
 
         bpy.context.scene.sl_props.is_loaded = load_lib
         [a.tag_redraw() for a in context.screen.areas]
