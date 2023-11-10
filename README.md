@@ -4,6 +4,8 @@ a Blender add-on to implement few tools and a library (shaders + geometry nodes)
 ### Intentions
 - To provide a tool to facilitate the use of materials and nodes. 
 - To develop a library among a group of students to respond to their needs, and provide them an easy access to this content
+
+![shader lib content](readme-images/lib_content_1.png)
  
 ### Installation
 Make sure you got the last LTS Blender version (3.6.2)
