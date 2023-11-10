@@ -43,7 +43,7 @@ Locate the old addon (_Spectres_) in the add-on list.
 - step 2 : remove it.
 - step 3 : press the refresh button.
 
-Follow Installation instructions again
+Follow Installation instructions again with new .zip file
 
 
 ### Content
