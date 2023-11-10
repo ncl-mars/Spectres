@@ -1,6 +1,9 @@
 # Spectres
 a Blender add-on to implement few tools and a library (shaders + geometry nodes)
 
+Among other things, this contains a portage of Inigo Quilez glsl library to Blender !
+-> https://iquilezles.org/articles/
+
 ### Intentions
 - To provide a tool to facilitate the use of materials and nodes. 
 - To develop a library among a group of students to respond to their needs, and provide them an easy access to this content
