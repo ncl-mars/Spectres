@@ -18,7 +18,7 @@ class SP_PT_panel(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_category = "ENSCI-Tools"
     bl_idname = "VIEW3D_PT_sp_panel"
-    bl_label = " ~ ENSCI | TOOLS ~ "
+    bl_label = " ~ ENSCI | TOOLS ~ ( Spectres )"
 
     def draw(self, context): return None
 
