@@ -4,8 +4,8 @@ import math
 import os
 import sys
 from dataclasses import dataclass
-from .commons import CollectionUtils as ColUtils
-from .lib_loader import LibTypes
+from .utils import CollectionUtils as ColUtils
+
 
 module = sys.modules[__name__]
 program = None
@@ -85,30 +85,30 @@ class R_OT_rigg_add(bpy.types.Operator):
 class LR_OT_arm_add(R_OT_rigg_add):
     bl_idname = "object.lr_arm_add"
     bl_label = "Create Light Arm"
-    def execute(self, context): return super().execute(context, LibTypes.LIGHT_RIGGS)
+    def execute(self, context): return super().execute(context, loader.LibTypes.LIGHT_RIGGS)
 
 class CR_OT_arm_add(R_OT_rigg_add):
     bl_idname = "object.cr_arm_add"
     bl_label = "Create Camera Arm"
-    def execute(self, context): return super().execute(context, LibTypes.CAM_RIGGS)
+    def execute(self, context): return super().execute(context, loader.LibTypes.CAM_RIGGS)
 
 class R_OT_rigg_clear(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}   
     bl_context = "Object"
     def execute(self, context, lib_type):
-        loader.clear_sp_col(bpy.data.collections.get(lib_type.idname))
+        loader.clear_sp_col_from_type(lib_type)
         return {'FINISHED'}
 
 class LR_OT_arms_clear(R_OT_rigg_clear):
     bl_idname = "object.lr_arms_clear"
     bl_label = "Clear Light Arms Folder"
-    def execute(self, context): return super().execute(context, LibTypes.LIGHT_RIGGS)
+    def execute(self, context): return super().execute(context, loader.LibTypes.LIGHT_RIGGS)
     def invoke(self, context, event): return context.window_manager.invoke_props_dialog(self, width = 150)
 
 class CR_OT_arms_clear(R_OT_rigg_clear):
     bl_idname = "object.cr_arms_clear"
     bl_label = "Clear Camera Arms Folder"
-    def execute(self, context): return super().execute(context, LibTypes.CAM_RIGGS)
+    def execute(self, context): return super().execute(context, loader.LibTypes.CAM_RIGGS)
     def invoke(self, context, event): return context.window_manager.invoke_props_dialog(self, width = 150)
 
 

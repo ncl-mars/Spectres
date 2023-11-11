@@ -5,7 +5,9 @@ import importlib
 from pathlib import Path
 from enum import Enum, IntEnum
 from dataclasses import dataclass
-from .commons import CollectionUtils as ColUtils
+
+from .utils import CollectionUtils as ColUtils
+
 
 
 # ------------------------------------------------------------------- LibDef
@@ -31,7 +33,8 @@ src = USER / "scripts/addons" / "Spectres-addon" # should not be hard coded
 file_path = src / "Spectres-lib.blend"
 
 ROOT_NAME = 'SP.LIB'
-INDEX_OBJECT_NAME = 2
+INDEX_OBJECT_NAME = 1
+
 
 # ------------------------------------------------------------------- Module's var
 module = sys.modules[__name__]
@@ -39,7 +42,10 @@ program = None
 root_col = None
 
 # ---------------------------------------------------- Clear SP.LIB sub collection
-def clear_sp_col(sp_col):
+def clear_sp_col_from_type(lib_type):
+
+    sp_col = bpy.data.collections.get(lib_type.idname)
+
     if sp_col :
         for child in sp_col.children:
             for obj in child.objects:
@@ -60,10 +66,11 @@ def clear_sp_col(sp_col):
                     bpy.data.meshes.remove(obj.data)
 
                     for txt in bpy.data.texts :
-                        if txt.users == 0 and txt.name.split('.')[0] == 'SP': 
+                        if txt.users == 0 and txt.name.split('.')[0] == lib_type.prefix: 
                             bpy.data.texts.remove(txt)
+
                     for grease in bpy.data.grease_pencils :
-                        if grease.users == 0 and grease.name.split('.')[0] == 'SP': 
+                        if grease.users == 0 and grease.name.split('.')[0] == lib_type.prefix: 
                             bpy.data.grease_pencils.remove(grease)
 
                 elif obj.type == 'OBJECT'   : bpy.data.objects.remove(obj)
@@ -80,9 +87,8 @@ def add_col_to_data(data_from, data_to, col_name):
 
 def add_worlds_to_data(data_from, data_to):
     for world in data_from.worlds:
-        if world.split('.')[0] == 'SP' :
-            if world.split('.')[1] == 'SL' :
-                data_to.worlds.append(world)
+        if world.split('.')[0] == 'SL' :
+            data_to.worlds.append(world)
     return data_to
 
 def load_lib_type(lib_type, id = None):
@@ -108,6 +114,8 @@ def load_lib_type(lib_type, id = None):
         else : data_to = add_col_to_data(data_from, data_to, "SP." + lib_type.prefix + str(id))
 
     return data_to
+
+    # return None
 
 # ------------------------------------------------------------- Registration
 def register():

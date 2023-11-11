@@ -25,9 +25,7 @@ class PathsUtils:
     def search_parent_up_hierarchy(self, purepath, nameid = 'user', separator = '-'):
 
         for i in range(0, len(purepath.parents), 1):
-
             split_dir_name = os.path.basename(purepath.parents[i])
-
             if split_dir_name == "datalib":
                 return purepath.parents[i]
 
@@ -37,9 +35,7 @@ class PathsUtils:
                 if split_dir_name[0]== nameid:
                     return purepath.parents[i].parent
 
-
             else: continue
-
         return None
 
     @classmethod
@@ -87,7 +83,6 @@ class CollectionUtils(PathsUtils):
                 return col
         return None
 
-
     @classmethod
     def create_linked_collection(self, parent = None, name = ""):
         collection = bpy.data.collections.new(name)
@@ -113,7 +108,6 @@ class CollectionUtils(PathsUtils):
 
         return collection
 
-    
     @classmethod
     def get_collection_from_name(self, name):
         for collection in bpy.data.collections:
@@ -122,37 +116,36 @@ class CollectionUtils(PathsUtils):
 
 
 
-class NodesUtils():
+# class NodesUtils():
 
-    @classmethod
-    def reset_mod_to_default(self, obj, mod):
-        node_tree = mod.node_group
-        obj.modifiers.remove(mod)
+#     @classmethod
+#     def reset_mod_to_default(self, obj, mod):
+#         node_tree = mod.node_group
+#         obj.modifiers.remove(mod)
 
-        p_sel_obj = bpy.context.view_layer.objects.active
-        ctx_obj = bpy.context.scene.objects[obj.name]
-        bpy.context.view_layer.objects.active = ctx_obj
+#         p_sel_obj = bpy.context.view_layer.objects.active
+#         ctx_obj = bpy.context.scene.objects[obj.name]
+#         bpy.context.view_layer.objects.active = ctx_obj
 
-        bpy.data.objects[obj.name].modifiers.new(node_tree.name,type='NODES')
-        bpy.data.objects[obj.name].modifiers[node_tree.name].node_group = node_tree
+#         bpy.data.objects[obj.name].modifiers.new(node_tree.name,type='NODES')
+#         bpy.data.objects[obj.name].modifiers[node_tree.name].node_group = node_tree
 
-        bpy.context.view_layer.objects.active = p_sel_obj
+#         bpy.context.view_layer.objects.active = p_sel_obj
 
-    @classmethod
-    def set_lib_time_empty_inputs(self, data_to = None, time_3d = None):
+#     @classmethod
+#     def set_lib_time_empty_inputs(self, data_to = None, time_3d = None):
  
-        for col in data_to.collections:
-            for obj in col.objects:
-                for mod in obj.modifiers :
+#         for col in data_to.collections:
+#             for obj in col.objects:
+#                 for mod in obj.modifiers :
 
-                    if mod.type == 'NODES':
-                        node_tree = mod.node_group
+#                     if mod.type == 'NODES':
+#                         node_tree = mod.node_group
 
-                        for i in node_tree.inputs:
-                            split_name = i.name.split("_")
+#                         for i in node_tree.inputs:
+#                             split_name = i.name.split("_")
 
-                            if split_name[0] == 'time' and split_name[1] == 'empty':
-                                i.default_value = time_3d.arrows[int(split_name[2])]
+#                             if split_name[0] == 'time' and split_name[1] == 'empty':
+#                                 i.default_value = time_3d.arrows[int(split_name[2])]
                         
-                        self.reset_mod_to_default(obj, mod)
-
+#                         self.reset_mod_to_default(obj, mod)

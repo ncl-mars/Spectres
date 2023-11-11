@@ -3,8 +3,8 @@ import os
 import sys
 
 from dataclasses import dataclass
-from .commons import CollectionUtils as ColUtils
-from .lib_loader import LibTypes
+from .utils import CollectionUtils as ColUtils
+
 
 module = sys.modules[__name__]
 program = None
@@ -74,8 +74,8 @@ class SL_OT_loader(bpy.types.Operator):
     def create_shader_col(self):
         col = ColUtils.check_create_collection(
         parent = loader.root_col, 
-        name = LibTypes.SHADERS.idname, 
-        color = LibTypes.SHADERS.color, 
+        name = loader.LibTypes.SHADERS.idname, 
+        color = loader.LibTypes.SHADERS.color, 
         override = False)
         col.hide_render = True
         # col.hide_viewport = True
@@ -83,7 +83,8 @@ class SL_OT_loader(bpy.types.Operator):
 
     def execute(self, context, load_lib):
         if load_lib:
-            lib_data = loader.load_lib_type(LibTypes.SHADERS, 1)
+
+            lib_data = loader.load_lib_type(loader.LibTypes.SHADERS, 1)
             shaders_col = self.create_shader_col()
             for sp_col in lib_data.collections :
                 shaders_col.children.link(sp_col)
@@ -91,7 +92,7 @@ class SL_OT_loader(bpy.types.Operator):
             # [shaders_col.children.link(sp_col) for sp_col in lib_data.collections]
 
         else:
-            loader.clear_sp_col(bpy.data.collections.get(LibTypes.SHADERS.idname))
+            loader.clear_sp_col_from_type(loader.LibTypes.SHADERS)
             self.clear_sp_worlds()
 
         bpy.context.scene.sl_props.is_loaded = load_lib
