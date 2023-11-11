@@ -95,6 +95,10 @@ def clear_sp_col_from_type(lib_type):
                 if world.name.split('.')[0] == "SL" :
                     if world.users == 0 : bpy.data.worlds.remove(world)
 
+    if root_col:
+        if len(root_col.children) == 0 :
+            bpy.data.collections.remove(root_col)
+
 
 # -------------------------------------------------------------- Loading stage
 def add_col_to_data(data_from, data_to, col_name):
