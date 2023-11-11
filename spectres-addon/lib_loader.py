@@ -5,10 +5,7 @@ import importlib
 from pathlib import Path
 from enum import Enum, IntEnum
 from dataclasses import dataclass
-
 from .utils import CollectionUtils as ColUtils
-
-
 
 # ------------------------------------------------------------------- LibDef
 class LibTypes(int, Enum):
@@ -35,11 +32,19 @@ file_path = src / "Spectres-lib.blend"
 ROOT_NAME = 'SP.LIB'
 INDEX_OBJECT_NAME = 1
 
-
 # ------------------------------------------------------------------- Module's var
 module = sys.modules[__name__]
 program = None
 root_col = None
+
+
+def clear_node_tree(node_tree):
+    for node in node_tree.nodes :
+        if node.type == 'GROUP':
+            if node.node_tree : 
+                clear_node_tree(node.node_tree)
+                bpy.data.node_groups.remove(node.node_tree)
+
 
 # ---------------------------------------------------- Clear SP.LIB sub collection
 def clear_sp_col_from_type(lib_type):
@@ -49,20 +54,25 @@ def clear_sp_col_from_type(lib_type):
     if sp_col :
         for child in sp_col.children:
             for obj in child.objects:
-                print("deleting sp objects : ", obj, " of type : ", obj.type)
-
                 if obj.type   == 'ARMATURE' : bpy.data.armatures.remove(obj.data)
                 elif obj.type == 'LIGHT'    : bpy.data.lights.remove(obj.data)
                 elif obj.type == 'CAMERA'   : bpy.data.cameras.remove(obj.data)
                 elif obj.type == 'MATERIAL' : bpy.data.materials.remove(obj.data)
                 elif obj.type == 'CURVE'    : bpy.data.curves.remove(obj.data)
+
                 elif obj.type == 'FONT'     :
                     if obj.data.font : bpy.data.fonts.remove(obj.data.font)
-                    bpy.data.curves.remove(obj.data, do_unlink = True)
+                    if obj.data.materials :
+                        if obj.data.materials[0] : bpy.data.materials.remove(obj.data.materials[0])
+
+                    bpy.data.curves.remove(obj.data)
 
                 elif obj.type == 'MESH'     : 
                     for slot in obj.material_slots :
-                        bpy.data.materials.remove(slot.material)
+                        mat = slot.material
+                        if mat.use_nodes: clear_node_tree(mat.node_tree)
+                        bpy.data.materials.remove(mat)
+
                     bpy.data.meshes.remove(obj.data)
 
                     for txt in bpy.data.texts :
@@ -77,6 +87,12 @@ def clear_sp_col_from_type(lib_type):
 
             bpy.data.collections.remove(child, do_unlink = True)
         bpy.data.collections.remove(sp_col, do_unlink = True)
+
+        if lib_type == LibTypes.SHADERS :
+            for world in bpy.data.worlds :
+                if world.name.split('.')[0] == "SL" :
+                    if world.users == 0 : bpy.data.worlds.remove(world)
+
 
 # -------------------------------------------------------------- Loading stage
 def add_col_to_data(data_from, data_to, col_name):
@@ -99,7 +115,6 @@ def load_lib_type(lib_type, id = None):
         color = 'COLOR_01', 
         override = False)
     root_col.hide_render = True
-    
 
     with bpy.data.libraries.load(str(file_path)) as (data_from, data_to):
         
@@ -114,8 +129,6 @@ def load_lib_type(lib_type, id = None):
         else : data_to = add_col_to_data(data_from, data_to, "SP." + lib_type.prefix + str(id))
 
     return data_to
-
-    # return None
 
 # ------------------------------------------------------------- Registration
 def register():
