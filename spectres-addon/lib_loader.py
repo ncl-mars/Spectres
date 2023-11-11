@@ -52,7 +52,9 @@ def clear_sp_col_from_type(lib_type):
     sp_col = bpy.data.collections.get(lib_type.idname)
 
     if sp_col :
+        
         for child in sp_col.children:
+
             for obj in child.objects:
                 if obj.type   == 'ARMATURE' : bpy.data.armatures.remove(obj.data)
                 elif obj.type == 'LIGHT'    : bpy.data.lights.remove(obj.data)
