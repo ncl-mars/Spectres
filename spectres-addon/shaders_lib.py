@@ -59,7 +59,6 @@ class SL_PT_props(bpy.types.PropertyGroup):
         update=on_exemples)
 
     
-
 class SL_OT_loader(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     bl_context = "Scene"
