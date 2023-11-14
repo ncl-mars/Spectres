@@ -51,7 +51,7 @@ Locate the old addon (_Spectres_) in the add-on list.
 Follow Installation instructions again, with the new .zip file
 
 !! ONCE IS REINSTALLED !!<br>
-=> go to the application menu (blender's logo next to file menu), Go To _System > Reload Scripts_ !!
+=>  go to the application menu (blender's logo next to file menu), Go To _System > Reload Scripts_ !!
 
 ### Content
 
