@@ -11,6 +11,8 @@ IF YOU REINSTALL THE ADD ON -> go check the reinstallation paragraph
 - To develop a library among a group of students to respond to their needs, and provide them an easy access to this content
 
 ![shader lib content](readme-images/lib_content_1.png)
+<!-- ![shader lib content](readme-images/exemple_1.png) -->
+![shader lib content](readme-images/exemple_2.png)
  
 ### Installation
 Make sure you got the last LTS Blender version (3.6.2)
